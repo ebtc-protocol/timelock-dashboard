@@ -6,6 +6,7 @@ import {
   GET_CANCELLED_TRANSACTIONS,
   GET_SALTS
 } from './queries';
+import './styles.css';
 
 const delayInDays = 2; // This represents the 2-day hardcoded delay
 
@@ -84,10 +85,14 @@ const App = () => {
         <tbody>
           {transactions.map(tx => (
             <tr key={tx.id}>
-              <td>{tx.TimelockControllerEnumerable_id}</td>
+              <td title={tx.TimelockControllerEnumerable_id}>
+                {`${tx.TimelockControllerEnumerable_id.substring(0, 6)}...${tx.TimelockControllerEnumerable_id.substring(tx.TimelockControllerEnumerable_id.length - 4)}`}
+              </td>
               <td>{tx.target}</td>
               <td>{tx.data}</td>
-              <td>{tx.salt}</td>
+              <td>
+                {tx.salt ? parseInt(tx.salt, 16).toString() : '-'}
+              </td>
               <td>{new Date(tx.blockTimestamp * 1000).toLocaleString()}</td>
               <td>{tx.eta}</td>
               <td>{tx.state}</td>

@@ -1,0 +1,45 @@
+/* styles.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000000; /* dark purple */
+    color: #fff; /* white */
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #3d2b7d; /* light purple border for table rows */
+  }
+  
+  th {
+    background-color: #3d2b7d; /* light purple */
+  }
+  
+  td {
+    background-color: #251e57; /* darker purple */
+  }
+  
+  tr:hover {
+    background-color: #2d2759; /* slightly lighter purple on hover */
+  }
+  
+  button {
+    background-color: #e30061; /* pinkish red */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #c2004d; /* darker pinkish red */
+  }
+  
