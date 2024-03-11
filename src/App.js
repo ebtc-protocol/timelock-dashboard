@@ -1,105 +1,87 @@
 import React, { useState, useEffect } from 'react';
+import { processTransactions } from './utils';
+import TransactionsTable from './components/TransactionsTable';
 import { useQuery } from '@apollo/client';
 import {
-  GET_SCHEDULED_TRANSACTIONS,
-  GET_EXECUTED_TRANSACTIONS,
-  GET_CANCELLED_TRANSACTIONS,
-  GET_SALTS
+  GET_LOW_SEC_SCHEDULED_TRANSACTIONS,
+  GET_HIGH_SEC_SCHEDULED_TRANSACTIONS,
+  GET_LOW_SEC_EXECUTED_TRANSACTIONS,
+  GET_HIGH_SEC_EXECUTED_TRANSACTIONS,
+  GET_LOW_SEC_CANCELLED_TRANSACTIONS,
+  GET_HIGH_SEC_CANCELLED_TRANSACTIONS,
+  GET_LOW_SEC_SALTS,
+  GET_HIGH_SEC_SALTS
 } from './queries';
 import './styles.css';
 
-const delayInDays = 2; // This represents the 2-day hardcoded delay
-
 const App = () => {
-  const [transactions, setTransactions] = useState([]);
+  const [lowSecTransactions, setLowSecTransactions] = useState([]);
+  const [highSecTransactions, setHighSecTransactions] = useState([]);
 
-  // Fetch data from The Graph
+  // Fetch data from The Graph for the Low Sec Timelock transactions
   const {
-    data: scheduledData,
-    loading: scheduledLoading,
-    error: scheduledError
-  } = useQuery(GET_SCHEDULED_TRANSACTIONS);
+    data: lowSecScheduledData,
+    loading: lowSecScheduledLoading,
+    error: lowSecScheduledError
+  } = useQuery(GET_LOW_SEC_SCHEDULED_TRANSACTIONS);
   
-  const { data: executedData } = useQuery(GET_EXECUTED_TRANSACTIONS);
-  const { data: cancelledData } = useQuery(GET_CANCELLED_TRANSACTIONS);
-  const { data: saltsData } = useQuery(GET_SALTS);
+  const { data: lowSecExecutedData } = useQuery(GET_LOW_SEC_EXECUTED_TRANSACTIONS);
+  const { data: lowSecCancelledData } = useQuery(GET_LOW_SEC_CANCELLED_TRANSACTIONS);
+  const { data: lowSecSaltsData } = useQuery(GET_LOW_SEC_SALTS);
+
+  // Fetch data from The Graph for the High Sec Timelock transactions
+  const {
+    data: highSecScheduledData,
+    loading: highSecScheduledLoading,
+    error: highSecScheduledError
+  } = useQuery(GET_HIGH_SEC_SCHEDULED_TRANSACTIONS);
+  const { data: highSecExecutedData } = useQuery(GET_HIGH_SEC_EXECUTED_TRANSACTIONS);
+  const { data: highSecCancelledData } = useQuery(GET_HIGH_SEC_CANCELLED_TRANSACTIONS);
+  const { data: highSecSaltsData } = useQuery(GET_HIGH_SEC_SALTS);
 
   // Process and combine data
   useEffect(() => {
-    if (scheduledData && executedData && cancelledData && saltsData) {
-      const processedTransactions = scheduledData.callScheduleds.map(scheduled => {
-        const executed = executedData.callExecuteds.find(ex => ex.TimelockControllerEnumerable_id === scheduled.TimelockControllerEnumerable_id);
-        const cancelled = cancelledData.cancelleds.find(can => can.TimelockControllerEnumerable_id === scheduled.TimelockControllerEnumerable_id);
-        const salt = saltsData.callSalts.find(s => s.TimelockControllerEnumerable_id === scheduled.TimelockControllerEnumerable_id) || { salt: '0x0' };
-        
-        const state = executed
-          ? 'Executed'
-          : cancelled
-          ? 'Cancelled'
-          : 'Scheduled';
-        
-        // Convert blockTimestamp from String to Number and calculate ETA using the event's delay
-        const timestamp = parseInt(scheduled.blockTimestamp);
-        const delayInSeconds = parseInt(scheduled.delay); // Make sure to parse the delay to an integer
-        const etaDate = new Date((timestamp + delayInSeconds) * 1000); // Use the delay from the event
-        
-        let eta = '';
-        if (!isNaN(etaDate.getTime())) {
-          eta = etaDate.toISOString();
-        } else {
-          console.error('Invalid blockTimestamp or delay:', scheduled.blockTimestamp, scheduled.delay);
-        }
-        
-        return {
-          ...scheduled,
-          state,
-          salt: salt.salt,
-          eta // this will be an empty string if the date is invalid
-        };
-      });
-      
-
-      setTransactions(processedTransactions);
+    if (lowSecScheduledData && lowSecExecutedData && lowSecCancelledData && lowSecSaltsData) {
+      setLowSecTransactions(processTransactions(
+        lowSecScheduledData.callScheduleds,
+        lowSecExecutedData.callExecuteds,
+        lowSecCancelledData.cancelleds,
+        lowSecSaltsData.callSalts,
+        'LowSecTimelock_id'
+      ));
     }
-  }, [scheduledData, executedData, cancelledData, saltsData]);
 
-  if (scheduledLoading) return <p>Loading...</p>;
-  if (scheduledError) return <p>Error loading transactions</p>;
+    if (highSecScheduledData && highSecExecutedData && highSecCancelledData && highSecSaltsData) {
+      setHighSecTransactions(processTransactions(
+        highSecScheduledData.highSecTimelockCallScheduleds,
+        highSecExecutedData.highSecTimelockCallExecuteds,
+        highSecCancelledData.highSecTimelockCancelleds,
+        highSecSaltsData.highSecTimelockCallSalts,
+        'HighSecTimelock_id'
+      ));
+    }
+  }, [
+    lowSecScheduledData,
+    lowSecExecutedData,
+    lowSecCancelledData,
+    lowSecSaltsData,
+    highSecScheduledData,
+    highSecExecutedData,
+    highSecCancelledData,
+    highSecSaltsData
+  ]);
 
-  // Render your table with the transactions data
+  if (lowSecScheduledLoading || highSecScheduledLoading) return <p>Loading...</p>;
+  if (lowSecScheduledError) return <p>Error loading LowSec Timelock transactions</p>;
+  if (highSecScheduledError) return <p>Error loading HighSec Timelock transactions</p>;
+
   return (
     <div>
-      <h1>Timelock Transactions</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Target</th>
-            <th>Data</th>
-            <th>Salt</th>
-            <th>Timestamp</th>
-            <th>ETA</th>
-            <th>State</th>
-          </tr>
-        </thead>
-        <tbody>
-          {transactions.map(tx => (
-            <tr key={tx.id}>
-              <td title={tx.TimelockControllerEnumerable_id}>
-                {`${tx.TimelockControllerEnumerable_id.substring(0, 6)}...${tx.TimelockControllerEnumerable_id.substring(tx.TimelockControllerEnumerable_id.length - 4)}`}
-              </td>
-              <td>{tx.target}</td>
-              <td>{tx.data}</td>
-              <td>
-                {tx.salt ? parseInt(tx.salt, 16).toString() : '-'}
-              </td>
-              <td>{new Date(tx.blockTimestamp * 1000).toLocaleString()}</td>
-              <td>{tx.eta}</td>
-              <td>{tx.state}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <h1>Low Security Timelock Transactions</h1>
+      <TransactionsTable transactions={lowSecTransactions} timelockIdKey='LowSecTimelock_id' />
+
+      <h1>High Security Timelock Transactions</h1>
+      <TransactionsTable transactions={highSecTransactions} timelockIdKey='HighSecTimelock_id' />
     </div>
   );
 };
