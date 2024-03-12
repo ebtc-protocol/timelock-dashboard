@@ -1,3 +1,6 @@
+import { Interface } from 'ethers';
+import contractNames from './contracts';
+
 export const processTransactions = (
     scheduledTransactions,
     executedTransactions,
@@ -38,5 +41,37 @@ export const processTransactions = (
         state: state
       };
     });
+  };
+  
+  // A utility function to find the contract name by address on a specific chain
+  const findContractNameByAddress = (address, chain) => {
+    const contractsOnChain = contractNames[chain];
+    for (const [name, contractAddress] of Object.entries(contractsOnChain)) {
+      if (address.toLowerCase() === contractAddress.toLowerCase()) {
+        return name;
+      }
+    }
+    return null;
+  };
+  
+  // The updated decoding function
+  export const decodeTransactionData = (data, target, chainId) => {
+    console.log(findContractNameByAddress(target, chainId))
+    try {
+      const contractName = findContractNameByAddress(target, chainId);
+      if (!contractName) {
+        throw new Error(`Contract name for address ${target} not found on chain ${chainId}.`);
+      }
+  
+      // Assuming ABIs are stored in `abis` folder with names matching the contract names in the mapping
+      const abi = require(`./../abis/${contractName}.json`);
+      const iface = new Interface(abi);
+      const decoded = iface.parseTransaction({ data });
+  
+      return `${decoded.name}(${decoded.args.join(', ')})`;
+    } catch (error) {
+      console.error('Error decoding transaction data:', error);
+      return 'Could not decode';
+    }
   };
   

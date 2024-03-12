@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { processTransactions } from './utils';
+import { processTransactions } from './utils/utils';
 import TransactionsTable from './components/TransactionsTable';
 import { useQuery } from '@apollo/client';
 import {
@@ -78,10 +78,10 @@ const App = () => {
   return (
     <div>
       <h1>Low Security Timelock Transactions</h1>
-      <TransactionsTable transactions={lowSecTransactions} timelockIdKey='LowSecTimelock_id' />
+      <TransactionsTable transactions={lowSecTransactions} timelockIdKey='LowSecTimelock_id' chain='sepolia'/>
 
       <h1>High Security Timelock Transactions</h1>
-      <TransactionsTable transactions={highSecTransactions} timelockIdKey='HighSecTimelock_id' />
+      <TransactionsTable transactions={highSecTransactions} timelockIdKey='HighSecTimelock_id' chain='sepolia'/>
     </div>
   );
 };

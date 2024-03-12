@@ -1,6 +1,7 @@
 import React from 'react';
+import { decodeTransactionData } from './../utils/utils';
 
-const TransactionsTable = ({ transactions, timelockIdKey }) => {
+const TransactionsTable = ({ transactions, timelockIdKey, chain}) => {
   return (
     <table>
       <thead>
@@ -21,7 +22,7 @@ const TransactionsTable = ({ transactions, timelockIdKey }) => {
               {`${tx[timelockIdKey].substring(0, 6)}...${tx[timelockIdKey].substring(tx[timelockIdKey].length - 4)}`}
             </td>
             <td>{tx.target}</td>
-            <td>{tx.data}</td>
+            <td>{decodeTransactionData(tx.data, tx.target, chain)}</td>
             <td>
               {tx.salt}
             </td>
