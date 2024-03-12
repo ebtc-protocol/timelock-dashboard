@@ -1,5 +1,6 @@
 import React from 'react';
-import { decodeTransactionData } from './../utils/utils';
+import { decodeTransactionData, findContractNameByAddress, getEtherscanLink } from './../utils/utils';
+import { contractNames } from './../utils/contracts';
 
 const TransactionsTable = ({ transactions, timelockIdKey, chain}) => {
   return (
@@ -21,7 +22,11 @@ const TransactionsTable = ({ transactions, timelockIdKey, chain}) => {
             <td title={tx[timelockIdKey]}>
               {`${tx[timelockIdKey].substring(0, 6)}...${tx[timelockIdKey].substring(tx[timelockIdKey].length - 4)}`}
             </td>
-            <td>{tx.target}</td>
+            <td>
+                <a href={getEtherscanLink(tx.target, chain)} target="_blank" rel="noopener noreferrer">
+                {findContractNameByAddress(tx.target, chain) || 'Unknown Contract'}
+                </a>
+            </td>
             <td>{decodeTransactionData(tx.data, tx.target, chain)}</td>
             <td>
               {tx.salt}

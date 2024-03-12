@@ -44,7 +44,7 @@ export const processTransactions = (
   };
   
   // A utility function to find the contract name by address on a specific chain
-  const findContractNameByAddress = (address, chain) => {
+  export  const findContractNameByAddress = (address, chain) => {
     const contractsOnChain = contractNames[chain];
     for (const [name, contractAddress] of Object.entries(contractsOnChain)) {
       if (address.toLowerCase() === contractAddress.toLowerCase()) {
@@ -56,7 +56,6 @@ export const processTransactions = (
   
   // The updated decoding function
   export const decodeTransactionData = (data, target, chainId) => {
-    console.log(findContractNameByAddress(target, chainId))
     try {
       const contractName = findContractNameByAddress(target, chainId);
       if (!contractName) {
@@ -74,4 +73,9 @@ export const processTransactions = (
       return 'Could not decode';
     }
   };
-  
+
+  // A utility function to get the Etherscan link for a specific address on a specific chain
+  export const getEtherscanLink = (address, chainId) => {
+    const prefix = chainId === 'mainnet' ? 'https://etherscan.io/address/' : 'https://sepolia.etherscan.io/address/';
+    return `${prefix}${address}`;
+  };
