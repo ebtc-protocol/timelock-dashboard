@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, FormControl, Select, MenuItem, Switch, FormGroup, FormControlLabel, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, FormControl, Select, MenuItem, Switch, FormGroup, FormControlLabel, InputLabel } from '@mui/material';
 import logo from '../assets/ebtc-main-logo.webp';
 
 const NavigationBar = ({ chainId, setChainId, darkMode, handleThemeChange }) => {
@@ -10,18 +10,18 @@ const NavigationBar = ({ chainId, setChainId, darkMode, handleThemeChange }) => 
   return (
     <AppBar position="static">
       <Toolbar>
-        <img src={logo} alt="eBTC Logo" style={{ maxHeight: '40px', marginRight: '16px' }} />
+        <img src={logo} alt="eBTC Logo" style={{ maxHeight: '48px', marginRight: '16px' }} />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Timelock Transparency Dashboard
         </Typography>
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="chain-select-label">Chain</InputLabel>
           <Select
             labelId="chain-select-label"
             id="chain-select"
             value={chainId}
-            onChange={handleChainChange}
             label="Chain"
-            style={{ color: 'white', borderBottom: '1px solid white' }}
+            onChange={handleChainChange}
           >
             <MenuItem value={'mainnet'}>Mainnet</MenuItem>
             <MenuItem value={'sepolia'}>Sepolia</MenuItem>
