@@ -1,46 +1,44 @@
-// theme.js
 import { createTheme } from '@mui/material/styles';
 
-// Define the eBTC theme colors and fonts
-const ebtcTheme = createTheme({
+const getDesignTokens = (mode) => ({
   palette: {
-    mode: 'dark', // Set the default mode to dark
+    mode,
     primary: {
-      main: '#c247fc', // eBTC primary color
+      main: mode === 'dark' ? '#c247fc' : '#9e29d3',
     },
     secondary: {
-      main: '#c247fc', // eBTC secondary color
+      main: '#c247fc',
     },
     background: {
-      default: '#190a21', // eBTC background color for dark mode
-      paper: '#190a21',
+      default: mode === 'dark' ? '#190a21' : '#ffffff',
+      paper: mode === 'dark' ? '#190a21' : '#ffffff',
     },
     text: {
-      primary: '#fff',
-      secondary: '#aaa',
+      primary: mode === 'dark' ? '#fff' : '#000',
+      secondary: mode === 'dark' ? '#aaa' : '#555',
     },
   },
   typography: {
-    fontFamily: 'Roboto, sans-serif', // Replace with the eBTC website's font if different
+    fontFamily: 'Roboto, sans-serif',
   },
   components: {
-    // Customizing MUI components globally
     MuiTableCell: {
       styleOverrides: {
         root: {
-          color: '#fff', // Text color for tables
+          color: mode === 'dark' ? '#fff' : '#000',
         },
       },
     },
     MuiLink: {
       styleOverrides: {
         root: {
-          color: '#e30061', // Primary color for links
+          color: mode === 'dark' ? '#e30061' : '#6200ea',
         },
       },
     },
-    // Add more component customizations as needed
   },
 });
 
-export default ebtcTheme;
+const createEbtcTheme = (mode) => createTheme(getDesignTokens(mode));
+
+export default createEbtcTheme;

@@ -2,7 +2,7 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, FormControl, Select, MenuItem, Switch, FormGroup, FormControlLabel, InputLabel } from '@mui/material';
 import logo from '../assets/ebtc-main-logo.webp';
 
-const NavigationBar = ({ chainId, setChainId, darkMode, handleThemeChange }) => {
+const NavigationBar = ({ chainId, setChainId, mode, handleThemeChange }) => {
   const handleChainChange = (event) => {
     setChainId(event.target.value);
   };
@@ -29,8 +29,8 @@ const NavigationBar = ({ chainId, setChainId, darkMode, handleThemeChange }) => 
         </FormControl>
         <FormGroup>
           <FormControlLabel
-            control={<Switch checked={darkMode} onChange={handleThemeChange} />}
-            label={darkMode ? '☀️' : '🌙'}
+            control={<Switch checked={mode === 'dark'} onChange={handleThemeChange} />}
+            label={mode === 'dark' ? '☀️' : '🌙'}
             labelPlacement="start"
             sx={{ color: 'white', marginLeft: 'auto' }}
           />

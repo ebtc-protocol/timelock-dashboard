@@ -12,7 +12,7 @@ import {
   GET_HIGH_SEC_SALTS
 } from './queries';
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
-import ebtcTheme from './Theme';
+import createEbtcTheme from './Theme';
 
 // Components
 import TransactionsTable from './components/TransactionsTable';
@@ -20,21 +20,15 @@ import NavigationBar from './components/NavigationBar';
 
 const App = () => {
   const [chainId, setChainId] = useState('sepolia');
-  const [darkMode, setDarkMode] = useState(true);
+  const [mode, setMode] = useState('dark'); // Default to 'dark' mode
 
   // Function to toggle the theme
   const handleThemeChange = () => {
-    setDarkMode(!darkMode);
+    setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
   };
 
   // Apply the dark or light mode based on state
-  const theme = createTheme({
-    ...ebtcTheme,
-    palette: {
-      ...ebtcTheme.palette,
-      mode: darkMode ? 'dark' : 'light',
-    },
-  });
+  const theme = createEbtcTheme(mode);
 
   // State to store the transactions
   const [lowSecTransactions, setLowSecTransactions] = useState([]);
@@ -103,7 +97,7 @@ const App = () => {
       <NavigationBar
         chainId={chainId}
         setChainId={setChainId}
-        darkMode={darkMode}
+        mode={mode}
         handleThemeChange={handleThemeChange}
       />
       <div>
