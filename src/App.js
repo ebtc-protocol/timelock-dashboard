@@ -12,7 +12,7 @@ import {
   GET_LOW_SEC_SALTS,
   GET_HIGH_SEC_SALTS
 } from './queries';
-import './styles.css';
+// import './styles.css';
 
 const App = () => {
   const [lowSecTransactions, setLowSecTransactions] = useState([]);
