@@ -45,21 +45,21 @@ const App = () => {
     data: lowSecScheduledData,
     loading: lowSecScheduledLoading,
     error: lowSecScheduledError
-  } = useQuery(GET_LOW_SEC_SCHEDULED_TRANSACTIONS);
+  } = useQuery(GET_LOW_SEC_SCHEDULED_TRANSACTIONS, {context: {chain: chainId},});
   
-  const { data: lowSecExecutedData } = useQuery(GET_LOW_SEC_EXECUTED_TRANSACTIONS);
-  const { data: lowSecCancelledData } = useQuery(GET_LOW_SEC_CANCELLED_TRANSACTIONS);
-  const { data: lowSecSaltsData } = useQuery(GET_LOW_SEC_SALTS);
+  const { data: lowSecExecutedData } = useQuery(GET_LOW_SEC_EXECUTED_TRANSACTIONS, {context: {chain: chainId},});
+  const { data: lowSecCancelledData } = useQuery(GET_LOW_SEC_CANCELLED_TRANSACTIONS, {context: {chain: chainId},});
+  const { data: lowSecSaltsData } = useQuery(GET_LOW_SEC_SALTS, {context: {chain: chainId},});
 
   // Fetch data from The Graph for the High Sec Timelock transactions
   const {
     data: highSecScheduledData,
     loading: highSecScheduledLoading,
     error: highSecScheduledError
-  } = useQuery(GET_HIGH_SEC_SCHEDULED_TRANSACTIONS);
-  const { data: highSecExecutedData } = useQuery(GET_HIGH_SEC_EXECUTED_TRANSACTIONS);
-  const { data: highSecCancelledData } = useQuery(GET_HIGH_SEC_CANCELLED_TRANSACTIONS);
-  const { data: highSecSaltsData } = useQuery(GET_HIGH_SEC_SALTS);
+  } = useQuery(GET_HIGH_SEC_SCHEDULED_TRANSACTIONS, {context: {chain: chainId},});
+  const { data: highSecExecutedData } = useQuery(GET_HIGH_SEC_EXECUTED_TRANSACTIONS, {context: {chain: chainId},});
+  const { data: highSecCancelledData } = useQuery(GET_HIGH_SEC_CANCELLED_TRANSACTIONS, {context: {chain: chainId},});
+  const { data: highSecSaltsData } = useQuery(GET_HIGH_SEC_SALTS, {context: {chain: chainId},});
 
   // Process and combine data
   useEffect(() => {
@@ -107,8 +107,8 @@ const App = () => {
         handleThemeChange={handleThemeChange}
       />
       <div>
-        <TransactionsTable transactions={lowSecTransactions} timelockIdKey='LowSecTimelock_id' chain='sepolia'/>
-        <TransactionsTable transactions={highSecTransactions} timelockIdKey='HighSecTimelock_id' chain='sepolia'/>
+        <TransactionsTable transactions={lowSecTransactions} timelockIdKey='LowSecTimelock_id' chain={chainId}/>
+        <TransactionsTable transactions={highSecTransactions} timelockIdKey='HighSecTimelock_id' chain={chainId}/>
       </div>
     </ThemeProvider>
   );
