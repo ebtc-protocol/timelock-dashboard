@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { processTransactions } from './utils/utils';
-import TransactionsTable from './components/TransactionsTable';
 import { useQuery } from '@apollo/client';
 import {
   GET_LOW_SEC_SCHEDULED_TRANSACTIONS,
@@ -12,9 +11,32 @@ import {
   GET_LOW_SEC_SALTS,
   GET_HIGH_SEC_SALTS
 } from './queries';
-// import './styles.css';
+import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
+import ebtcTheme from './Theme';
+
+// Components
+import TransactionsTable from './components/TransactionsTable';
+import NavigationBar from './components/NavigationBar';
 
 const App = () => {
+  const [chainId, setChainId] = useState('sepolia');
+  const [darkMode, setDarkMode] = useState(true);
+
+  // Function to toggle the theme
+  const handleThemeChange = () => {
+    setDarkMode(!darkMode);
+  };
+
+  // Apply the dark or light mode based on state
+  const theme = createTheme({
+    ...ebtcTheme,
+    palette: {
+      ...ebtcTheme.palette,
+      mode: darkMode ? 'dark' : 'light',
+    },
+  });
+
+  // State to store the transactions
   const [lowSecTransactions, setLowSecTransactions] = useState([]);
   const [highSecTransactions, setHighSecTransactions] = useState([]);
 
@@ -76,13 +98,19 @@ const App = () => {
   if (highSecScheduledError) return <p>Error loading HighSec Timelock transactions</p>;
 
   return (
-    <div>
-      <h1>Low Security Timelock Transactions</h1>
-      <TransactionsTable transactions={lowSecTransactions} timelockIdKey='LowSecTimelock_id' chain='sepolia'/>
-
-      <h1>High Security Timelock Transactions</h1>
-      <TransactionsTable transactions={highSecTransactions} timelockIdKey='HighSecTimelock_id' chain='sepolia'/>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline /> 
+      <NavigationBar
+        chainId={chainId}
+        setChainId={setChainId}
+        darkMode={darkMode}
+        handleThemeChange={handleThemeChange}
+      />
+      <div>
+        <TransactionsTable transactions={lowSecTransactions} timelockIdKey='LowSecTimelock_id' chain='sepolia'/>
+        <TransactionsTable transactions={highSecTransactions} timelockIdKey='HighSecTimelock_id' chain='sepolia'/>
+      </div>
+    </ThemeProvider>
   );
 };
 

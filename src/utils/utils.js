@@ -79,3 +79,10 @@ export const processTransactions = (
     const prefix = chainId === 'mainnet' ? 'https://etherscan.io/address/' : 'https://sepolia.etherscan.io/address/';
     return `${prefix}${address}`;
   };
+
+ export const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+    }, (err) => {
+      console.error('Could not copy text: ', err);
+    });
+  };
