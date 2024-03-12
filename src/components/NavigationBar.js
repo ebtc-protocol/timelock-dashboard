@@ -1,5 +1,6 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, FormControl, Select, MenuItem, Switch, FormGroup, FormControlLabel } from '@mui/material';
+import { AppBar, Toolbar, Typography, FormControl, Select, MenuItem, Switch, FormGroup, FormControlLabel, Box } from '@mui/material';
+import logo from '../assets/ebtc-main-logo.webp';
 
 const NavigationBar = ({ chainId, setChainId, darkMode, handleThemeChange }) => {
   const handleChainChange = (event) => {
@@ -9,8 +10,9 @@ const NavigationBar = ({ chainId, setChainId, darkMode, handleThemeChange }) => 
   return (
     <AppBar position="static">
       <Toolbar>
+        <img src={logo} alt="eBTC Logo" style={{ maxHeight: '40px', marginRight: '16px' }} />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          eBTC Timelock Transparency Dashboard
+          Timelock Transparency Dashboard
         </Typography>
         <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
           <Select

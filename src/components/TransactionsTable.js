@@ -7,7 +7,7 @@ const TransactionsTable = ({ transactions, timelockIdKey, chain }) => {
   return (
     <>
         <Typography variant="h6" component="h2" sx={{ mt: 2, mb: 2, fontWeight: 400, paddingLeft: 2  }}>
-        {timelockIdKey.includes('LowSec') ? 'LowSec Timelock Transactions' : 'HighSec Timelock Transactions'}
+        {timelockIdKey.includes('LowSec') ? 'LowSecTimelock Transactions' : 'HighSecTimelock Transactions'}
         </Typography>
         <TableContainer component={Paper} sx={{ mx: 'auto', maxWidth: 'calc(100% - 32px)', mb: 4 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
