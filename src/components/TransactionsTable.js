@@ -23,9 +23,9 @@ const TransactionsTable = ({ transactions, timelockIdKey }) => {
             <td>{tx.target}</td>
             <td>{tx.data}</td>
             <td>
-              {tx.salt ? parseInt(tx.salt, 16).toString() : '-'}
+              {tx.salt}
             </td>
-            <td>{new Date(tx.blockTimestamp * 1000).toLocaleString()}</td>
+            <td>{tx.timestamp}</td>
             <td>{tx.eta}</td>
             <td>{tx.state}</td>
           </tr>
