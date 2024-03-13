@@ -6,10 +6,22 @@ import EtherscanLinkChip from './EtherscanLinkChip';
 import ProgressWithLabel from './ProgressWithLabel';
 
 const TransactionsTable = ({ transactions, timelockIdKey, chain }) => {
+    const renderTableTitle = (timelockName) => {
+        const addressLink = getEtherscanAddressUrl(timelockName, chain);
+      
+        return (
+          <Typography variant="h6" component="h2">
+            <Link href={addressLink} target="_blank" rel="noopener noreferrer" color="inherit">
+              {timelockName}
+            </Link>
+          </Typography>
+        );
+      };
+
   return (
     <>
         <Typography variant="h6" component="h2" sx={{ mt: 2, mb: 2, fontWeight: 400, paddingLeft: 2  }}>
-        {timelockIdKey.includes('LowSec') ? 'LowSecTimelock Transactions' : 'HighSecTimelock Transactions'}
+        {timelockIdKey.includes('LowSec') ? renderTableTitle('LowSecTimelock') : renderTableTitle('HighSecTimelock')}
         </Typography>
         <TableContainer component={Paper} sx={{ mx: 'auto', maxWidth: 'calc(100% - 32px)', mb: 4 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
