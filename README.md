@@ -1,3 +1,7 @@
+<div align="center" style="margin-bottom:15px">
+  <img height=80 src="https://www.ebtc.finance/_next/image?url=%2Fassets%2Fmain-logo.png&w=640&q=75">
+</div>
+
 # eBTC Timelock Transparency Dashboard
 
 ## Description
