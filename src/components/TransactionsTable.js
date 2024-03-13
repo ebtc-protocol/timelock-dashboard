@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typog
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { decodeTransactionData, findContractNameByAddress, getEtherscanAddressUrl, copyToClipboard } from '../utils/utils';
 import EtherscanLinkChip from './EtherscanLinkChip';
+import ProgressWithLabel from './ProgressWithLabel';
 
 const TransactionsTable = ({ transactions, timelockIdKey, chain }) => {
   return (
@@ -48,7 +49,14 @@ const TransactionsTable = ({ transactions, timelockIdKey, chain }) => {
                 <TableCell align="right">{decodeTransactionData(tx.data, tx.target, chain)}</TableCell>
                 <TableCell align="right">{tx.salt}</TableCell>
                 <TableCell align="right">{tx.timestamp}</TableCell>
-                <TableCell align="right">{tx.eta}</TableCell>
+                <TableCell align="right">
+                    {tx.eta}  
+                    <ProgressWithLabel
+                        startDateString={tx.timestamp}
+                        endDateString={tx.eta}
+                        state={tx.state}
+                    />
+                </TableCell>
                 <TableCell align="right"><EtherscanLinkChip id={tx.id} label={tx.state} chain={chain} /></TableCell>
                 </TableRow>
             ))}
