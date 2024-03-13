@@ -75,10 +75,17 @@ export const processTransactions = (
   };
 
   // A utility function to get the Etherscan link for a specific address on a specific chain
-  export const getEtherscanLink = (address, chainId) => {
+  export const getEtherscanAddressUrl = (address, chainId) => {
     const prefix = chainId === 'mainnet' ? 'https://etherscan.io/address/' : 'https://sepolia.etherscan.io/address/';
     return `${prefix}${address}`;
   };
+
+  export const getEtherscanTxUrl = (id, chain) => {
+    const txHash = id.slice(0, 66); // Extract the first 66 characters for the hash
+    const etherscanBaseUrl = chain === 'mainnet' ? 'https://etherscan.io/tx/' : 'https://sepolia.etherscan.io/tx/';
+    return etherscanBaseUrl + txHash;
+  };
+  
 
  export const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(() => {

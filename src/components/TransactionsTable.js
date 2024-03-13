@@ -1,7 +1,8 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper, Link, IconButton, Tooltip } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { decodeTransactionData, findContractNameByAddress, getEtherscanLink, copyToClipboard } from '../utils/utils';
+import { decodeTransactionData, findContractNameByAddress, getEtherscanAddressUrl, copyToClipboard } from '../utils/utils';
+import EtherscanLinkChip from './EtherscanLinkChip';
 
 const TransactionsTable = ({ transactions, timelockIdKey, chain }) => {
   return (
@@ -40,7 +41,7 @@ const TransactionsTable = ({ transactions, timelockIdKey, chain }) => {
                         </Tooltip>
                     </TableCell>
                 <TableCell align="right">
-                    <Link href={getEtherscanLink(tx.target, chain)} target="_blank" rel="noopener noreferrer" color="inherit">
+                    <Link href={getEtherscanAddressUrl(tx.target, chain)} target="_blank" rel="noopener noreferrer" color="inherit">
                     {findContractNameByAddress(tx.target, chain) || 'Unknown Contract'}
                     </Link>
                 </TableCell>
@@ -48,7 +49,7 @@ const TransactionsTable = ({ transactions, timelockIdKey, chain }) => {
                 <TableCell align="right">{tx.salt}</TableCell>
                 <TableCell align="right">{tx.timestamp}</TableCell>
                 <TableCell align="right">{tx.eta}</TableCell>
-                <TableCell align="right">{tx.state}</TableCell>
+                <TableCell align="right"><EtherscanLinkChip id={tx.id} label={tx.state} chain={chain} /></TableCell>
                 </TableRow>
             ))}
             </TableBody>
