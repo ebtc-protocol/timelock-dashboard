@@ -26,5 +26,7 @@ module.exports = {
     'no-nested-ternary': 'off',
     'import/no-dynamic-require': 'off',
     'no-restricted-syntax': 'off',
+    'react/jsx-filename-extension': 'off',
+    'react/no-deprecated': 'off',
   },
 };
