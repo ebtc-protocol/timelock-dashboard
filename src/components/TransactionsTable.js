@@ -4,10 +4,12 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { decodeTransactionData, findContractNameByAddress, getEtherscanAddressUrl, copyToClipboard } from '../utils/utils';
 import EtherscanLinkChip from './EtherscanLinkChip';
 import ProgressWithLabel from './ProgressWithLabel';
+import contractNames from '../utils/contracts';
 
 const TransactionsTable = ({ transactions, timelockIdKey, chain }) => {
     const renderTableTitle = (timelockName) => {
-        const addressLink = getEtherscanAddressUrl(timelockName, chain);
+        const address = contractNames[chain][timelockName];
+        const addressLink = getEtherscanAddressUrl(address, chain);
       
         return (
           <Typography variant="h6" component="h2">
