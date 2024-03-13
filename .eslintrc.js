@@ -19,5 +19,12 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  rules: {},
+  rules: {
+    'react/prop-types': 'off',
+    'no-console': 'off',
+    'global-require': 'off',
+    'no-nested-ternary': 'off',
+    'import/no-dynamic-require': 'off',
+    'no-restricted-syntax': 'off',
+  },
 };

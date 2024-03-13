@@ -1,3 +1,4 @@
+import React from 'react';
 import Chip from '@mui/material/Chip';
 import LinkIcon from '@mui/icons-material/Link';
 import { getEtherscanTxUrl } from '../utils/utils';

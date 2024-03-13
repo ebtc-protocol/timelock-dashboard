@@ -29,7 +29,8 @@ export const processTransactions = (
     const timestamp = Number(scheduled.blockTimestamp);
     const delayInSeconds = Number(scheduled.delay);
     const etaTimestamp = timestamp + delayInSeconds;
-    const isValidDate = !isNaN(timestamp) && !isNaN(delayInSeconds);
+    const isValidDate =
+      !Number.isNaN(timestamp) && !Number.isNaN(delayInSeconds);
     const etaDate = isValidDate ? new Date(etaTimestamp * 1000) : null;
     const timestampDate = isValidDate ? new Date(timestamp * 1000) : null;
 
