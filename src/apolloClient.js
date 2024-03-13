@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
 
 const httpLink = new HttpLink({
-  uri: 'https://api.studio.thegraph.com/query/67541/ebtc-sepolia-timelocks/version/latest', // Default to Sepolia
+  uri: 'https://api.studio.thegraph.com/query/67541/ebtc-mainnet-timelocks/version/latest', // Default to Mainnet
 });
 
 const middlewareLink = new ApolloLink((operation, forward) => {

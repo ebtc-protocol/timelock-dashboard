@@ -19,7 +19,7 @@ import TransactionsTable from './components/TransactionsTable';
 import NavigationBar from './components/NavigationBar';
 
 const App = () => {
-  const [chainId, setChainId] = useState('sepolia');
+  const [chainId, setChainId] = useState('mainnet');
   const [mode, setMode] = useState('dark'); // Default to 'dark' mode
 
   // Function to toggle the theme
