@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+# eBTC Timelock Transparency Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+The eBTC Timelock Transparency Dashboard is a web application designed to monitor and display transactions for the [eBTC Minimized Governance](https://forum.badger.finance/t/ebtc-minimized-governance-framework/6168) Timelocks and their state. It provides users with a real-time view of the state of transactions within the HighSec and LowSec Timelock contracts deployed on Sepolia and Ethereum Mainnet. By integrating with The Graph and Etherscan, the dashboard showcases transaction details such as ID, target, data, salt, timestamp, ETA, and the current state—scheduled, executed, or cancelled.
 
-In the project directory, you can run:
+eBTC uses Open Zeppelin's TimelockController [contract](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/TimelockController.sol).
 
-### `npm start`
+Learn [more](https://www.ebtc.finance/) about eBTC!
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Transaction Parameters
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **ID**: The unique internal identifier for each timelock transaction.
+- **Target**: The contract where the transaction intends to execute an operation.
+- **Data**: The function call and parameters to be executed by the timelock on the target in matter.
+- **Salt**: An optional value that can be passed to a transaction in order to make it unique in case of a repeated target + data.
+- **Timestamp**: The date and time at which the transaction was scheduled into timelock.
+- **ETA**: The date and time at which a transaction will become or became executable (includes a progress bar to visualize the remaning time before execution is availble).
+- **State**: Shows whether a transaction is currently scheduled, executed or cancelled.
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To set up the eBTC Timelock Transparency Dashboard locally, follow these instructions:
 
-### `npm run build`
+1. **Clone the Repository:**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```sh
+git clone https://github.com/ebtc-finance/ebtc-timelock-dashboard.git
+cd ebtc-timelock-dashboard
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Install Dependencies:**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Ensure you have Node.js and npm/yarn installed, then run:
 
-### `npm run eject`
+```sh
+npm install
+# or
+yarn install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. **Start the Application:**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```sh
+npm start
+# or
+yarn start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+The application should now be running on `http://localhost:3000`.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Features
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **Real-time Updates**: Dynamically fetches the latest transaction data from the blockchain.
+- **Chain Selector**: Toggle between Sepolia and Mainnet to view transactions from different networks.
+- **Transaction State Links**: Direct links to Etherscan for each transaction based on its state.
+- **Progress Bar**: Displays the progress of the time window for a transaction to be executed.
+- **Dark and Light Mode**: Users can switch between themes for comfort.
+- **Copy to Clipboard**: Allows easy copying of the full transaction ID.
