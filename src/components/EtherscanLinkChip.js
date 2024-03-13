@@ -3,7 +3,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import { getEtherscanTxUrl } from '../utils/utils';
 
 // Inside your component that renders the table row:
-const EtherscanLinkChip = ({ id, label, chain }) => {
+function EtherscanLinkChip({ id, label, chain }) {
   const etherscanUrl = getEtherscanTxUrl(id, chain);
 
   return (
@@ -16,6 +16,6 @@ const EtherscanLinkChip = ({ id, label, chain }) => {
       sx={{ cursor: 'pointer' }}
     />
   );
-};
+}
 
 export default EtherscanLinkChip;

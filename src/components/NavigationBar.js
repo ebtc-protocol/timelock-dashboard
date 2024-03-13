@@ -1,8 +1,19 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, FormControl, Select, MenuItem, Switch, FormGroup, FormControlLabel, InputLabel } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  FormControl,
+  Select,
+  MenuItem,
+  Switch,
+  FormGroup,
+  FormControlLabel,
+  InputLabel,
+} from '@mui/material';
 import logo from '../assets/ebtc-main-logo.webp';
 
-const NavigationBar = ({ chainId, setChainId, mode, handleThemeChange }) => {
+function NavigationBar({ chainId, setChainId, mode, handleThemeChange }) {
   const handleChainChange = (event) => {
     setChainId(event.target.value);
   };
@@ -10,7 +21,11 @@ const NavigationBar = ({ chainId, setChainId, mode, handleThemeChange }) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <img src={logo} alt="eBTC Logo" style={{ maxHeight: '48px', marginRight: '16px' }} />
+        <img
+          src={logo}
+          alt="eBTC Logo"
+          style={{ maxHeight: '48px', marginRight: '16px' }}
+        />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Timelock Transparency Dashboard
         </Typography>
@@ -23,13 +38,15 @@ const NavigationBar = ({ chainId, setChainId, mode, handleThemeChange }) => {
             label="Chain"
             onChange={handleChainChange}
           >
-            <MenuItem value={'mainnet'}>Mainnet</MenuItem>
-            <MenuItem value={'sepolia'}>Sepolia</MenuItem>
+            <MenuItem value="mainnet">Mainnet</MenuItem>
+            <MenuItem value="sepolia">Sepolia</MenuItem>
           </Select>
         </FormControl>
         <FormGroup>
           <FormControlLabel
-            control={<Switch checked={mode === 'dark'} onChange={handleThemeChange} />}
+            control={
+              <Switch checked={mode === 'dark'} onChange={handleThemeChange} />
+            }
             label={mode === 'dark' ? '☀️' : '🌙'}
             labelPlacement="start"
             sx={{ color: 'white', marginLeft: 'auto' }}
@@ -38,6 +55,6 @@ const NavigationBar = ({ chainId, setChainId, mode, handleThemeChange }) => {
       </Toolbar>
     </AppBar>
   );
-};
+}
 
 export default NavigationBar;

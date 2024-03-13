@@ -7,7 +7,7 @@ function calculateProgress(startDateString, endDateString) {
   const startDate = new Date(startDateString);
   const endDate = new Date(endDateString);
   const now = new Date();
-  
+
   // Ensure start date is before end date to avoid negative progress
   if (startDate > endDate) {
     return 100;
@@ -21,8 +21,10 @@ function calculateProgress(startDateString, endDateString) {
   return Math.min(Math.max(progress, 0), 100);
 }
 
-const ProgressWithLabel = ({ startDateString, endDateString, state }) => {
-  const [progress, setProgress] = useState(() => calculateProgress(startDateString, endDateString));
+function ProgressWithLabel({ startDateString, endDateString, state }) {
+  const [progress, setProgress] = useState(() =>
+    calculateProgress(startDateString, endDateString)
+  );
 
   useEffect(() => {
     // Update the progress bar every second
@@ -34,10 +36,14 @@ const ProgressWithLabel = ({ startDateString, endDateString, state }) => {
   }, [startDateString, endDateString]);
 
   // Determine color based on state
-  const color = state === 'Scheduled' ? 'warning'
-               : state === 'Executed' || state === 'Ready to execute' ? 'success'
-               : state === 'Cancelled' ? 'error'
-               : 'primary';
+  const color =
+    state === 'Scheduled'
+      ? 'warning'
+      : state === 'Executed' || state === 'Ready to execute'
+        ? 'success'
+        : state === 'Cancelled'
+          ? 'error'
+          : 'primary';
 
   return (
     <Box display="flex" alignItems="center">
@@ -45,10 +51,13 @@ const ProgressWithLabel = ({ startDateString, endDateString, state }) => {
         <LinearProgress variant="determinate" value={progress} color={color} />
       </Box>
       <Box minWidth={35}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(progress)}%`}</Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+        >{`${Math.round(progress)}%`}</Typography>
       </Box>
     </Box>
   );
-};
+}
 
 export default ProgressWithLabel;

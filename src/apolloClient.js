@@ -1,4 +1,9 @@
-import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+  ApolloLink,
+} from '@apollo/client';
 
 const httpLink = new HttpLink({
   uri: 'https://api.studio.thegraph.com/query/67541/ebtc-mainnet-timelocks/version/latest', // Default to Mainnet
@@ -6,7 +11,7 @@ const httpLink = new HttpLink({
 
 const middlewareLink = new ApolloLink((operation, forward) => {
   operation.setContext({
-    uri: `https://api.studio.thegraph.com/query/67541/ebtc-${operation.getContext().chain}-timelocks/version/latest`
+    uri: `https://api.studio.thegraph.com/query/67541/ebtc-${operation.getContext().chain}-timelocks/version/latest`,
   });
   return forward(operation);
 });
@@ -14,7 +19,7 @@ const middlewareLink = new ApolloLink((operation, forward) => {
 const link = middlewareLink.concat(httpLink);
 
 const client = new ApolloClient({
-  link: link,
+  link,
   cache: new InMemoryCache(),
 });
 
