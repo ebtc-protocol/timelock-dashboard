@@ -4,6 +4,7 @@ module.exports = {
     es2021: true,
   },
   extends: ['airbnb', 'plugin:prettier/recommended'],
+  ignorePatterns: ['build/'],
   overrides: [
     {
       env: {
@@ -13,6 +14,12 @@ module.exports = {
       parserOptions: {
         sourceType: 'script',
       },
+    },
+    {
+      env: {
+        jest: true,
+      },
+      files: ['**/*.test.js'],
     },
   ],
   parserOptions: {

@@ -38,13 +38,9 @@ function TransactionsTable({ transactions, timelockIdKey, chain }) {
     setPage(0); // Reset to the first page
   };
 
-  const handleCopyRawData = (rawData) => {
-    navigator.clipboard.writeText(rawData);
-  };
-
   const sortedTransactions = transactions
     .slice()
-    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    .sort((a, b) => b.timestampMs - a.timestampMs);
 
   const renderTableTitle = (timelockName) => {
     const address = contractNames[chain][timelockName];
@@ -142,7 +138,7 @@ function TransactionsTable({ transactions, timelockIdKey, chain }) {
                           leaveDelay={200}
                         >
                           <IconButton
-                            onClick={() => handleCopyRawData(rawData)}
+                            onClick={() => copyToClipboard(rawData)}
                             size="small"
                           >
                             <ContentCopyIcon fontSize="inherit" />
@@ -155,8 +151,8 @@ function TransactionsTable({ transactions, timelockIdKey, chain }) {
                     <TableCell align="right">
                       {tx.eta}
                       <ProgressWithLabel
-                        startDateString={tx.timestamp}
-                        endDateString={tx.eta}
+                        startMs={tx.timestampMs}
+                        endMs={tx.etaMs}
                         state={tx.state}
                       />
                     </TableCell>

@@ -2,6 +2,13 @@ import { Interface } from 'ethers';
 import contractNames from './contracts';
 import roleMapping from './timelockRoles';
 
+// Events for an operation id only count if they happened at or after this
+// schedule: OpenZeppelin's TimelockController lets a cancelled id be rescheduled.
+const findEventSince = (events, idKey, id, since) =>
+  events.find(
+    (event) => event[idKey] === id && Number(event.blockTimestamp) >= since
+  );
+
 export const processTransactions = (
   scheduledTransactions,
   executedTransactions,
@@ -10,11 +17,19 @@ export const processTransactions = (
   idKey
 ) =>
   scheduledTransactions.map((scheduled) => {
-    const executed = executedTransactions.find(
-      (ex) => ex[idKey] === scheduled[idKey]
+    const timestamp = Number(scheduled.blockTimestamp);
+    const delayInSeconds = Number(scheduled.delay);
+    const executed = findEventSince(
+      executedTransactions,
+      idKey,
+      scheduled[idKey],
+      timestamp
     );
-    const cancelled = cancelledTransactions.find(
-      (can) => can[idKey] === scheduled[idKey]
+    const cancelled = findEventSince(
+      cancelledTransactions,
+      idKey,
+      scheduled[idKey],
+      timestamp
     );
     const saltEntity = salts.find((s) => s[idKey] === scheduled[idKey]) || {
       salt: '0x0',
@@ -24,11 +39,9 @@ export const processTransactions = (
 
     const salt =
       saltEntity && saltEntity.salt !== '0x0'
-        ? parseInt(saltEntity.salt, 16).toString()
+        ? BigInt(saltEntity.salt).toString()
         : '-';
 
-    const timestamp = Number(scheduled.blockTimestamp);
-    const delayInSeconds = Number(scheduled.delay);
     const etaTimestamp = timestamp + delayInSeconds;
     const isValidDate =
       !Number.isNaN(timestamp) && !Number.isNaN(delayInSeconds);
@@ -43,6 +56,8 @@ export const processTransactions = (
       value: scheduled.value,
       data: scheduled.data,
       salt,
+      timestampMs: timestampDate ? timestampDate.getTime() : null,
+      etaMs: etaDate ? etaDate.getTime() : null,
       timestamp: timestampDate
         ? timestampDate.toLocaleString()
         : 'Invalid Date',
@@ -62,7 +77,7 @@ export const findContractNameByAddress = (address, chain) => {
   return null;
 };
 
-// The updated decoding function
+// Decodes timelock calldata into a readable function call
 export const decodeTransactionData = (data, target, chainId) => {
   try {
     let contractName = findContractNameByAddress(target, chainId);
@@ -72,7 +87,7 @@ export const decodeTransactionData = (data, target, chainId) => {
       );
     }
 
-    // If cntract name includes _old, remove it (Sepolia has two sets of contracts)
+    // If contract name includes _old, remove it (Sepolia has two sets of contracts)
     contractName = contractName.replace('_old', '');
 
     // Assuming ABIs are stored in `abis` folder with names matching the contract names in the mapping

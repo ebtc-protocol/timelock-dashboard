@@ -3,37 +3,37 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-function calculateProgress(startDateString, endDateString) {
-  const startDate = new Date(startDateString);
-  const endDate = new Date(endDateString);
-  const now = new Date();
+export function calculateProgress(startMs, endMs, nowMs = Date.now()) {
+  if (startMs === null || endMs === null) {
+    return 0;
+  }
 
   // Ensure start date is before end date to avoid negative progress
-  if (startDate > endDate) {
+  if (startMs >= endMs) {
     return 100;
   }
 
-  const totalDuration = endDate - startDate;
-  const timePassed = now - startDate;
+  const totalDuration = endMs - startMs;
+  const timePassed = nowMs - startMs;
   const progress = (timePassed / totalDuration) * 100;
 
   // Ensure progress is between 0 and 100
   return Math.min(Math.max(progress, 0), 100);
 }
 
-function ProgressWithLabel({ startDateString, endDateString, state }) {
+function ProgressWithLabel({ startMs, endMs, state }) {
   const [progress, setProgress] = useState(() =>
-    calculateProgress(startDateString, endDateString)
+    calculateProgress(startMs, endMs)
   );
 
   useEffect(() => {
     // Update the progress bar every second
     const interval = setInterval(() => {
-      setProgress(calculateProgress(startDateString, endDateString));
+      setProgress(calculateProgress(startMs, endMs));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [startDateString, endDateString]);
+  }, [startMs, endMs]);
 
   // Determine color based on state
   const color =

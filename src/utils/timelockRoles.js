@@ -1,4 +1,4 @@
-// The followig is a mapping of the potential roles on the Tiemelock contracts to their encoded hashes
+// The following is a mapping of the potential roles on the Timelock contracts to their encoded hashes
 const roleMapping = {
   '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783':
     'CANCELLER_ROLE',
