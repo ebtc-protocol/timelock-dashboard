@@ -1,19 +1,27 @@
-name: Lint and Format Code Base
+name: CI
 
-on: [pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
-  lint-and-format:
+  checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '20'
+          cache: npm
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
       - name: Run ESLint
         run: npm run lint
       - name: Check Prettier Formatting
         run: npm run prettier
+      - name: Run Tests
+        run: npm test -- --watchAll=false
+      - name: Build
+        run: npm run build
