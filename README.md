@@ -1,7 +1,3 @@
-<div align="center" style="margin-bottom:15px">
-  <img height=80 src="https://www.ebtc.finance/_next/image?url=%2Fassets%2Fmain-logo.png&w=640&q=75">
-</div>
-
 # eBTC Timelock Transparency Dashboard
 
 ## Description
@@ -10,7 +6,13 @@ The eBTC Timelock Transparency Dashboard is a web application designed to monito
 
 eBTC uses Open Zeppelin's TimelockController [contract](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/TimelockController.sol).
 
-Learn [more](https://www.ebtc.finance/) about eBTC!
+## Status
+
+The eBTC protocol is deprecated and this dashboard is no longer maintained. The hosted site no longer loads data because the Graph Studio development endpoint it used is unavailable. To run it, publish the [subgraph](https://github.com/sajanrajdev/ebtc-mainnet-timelocks-subgraph) and set its URL as shown in `.env.example`.
+
+## How It Works
+
+Timelock events are indexed by a subgraph and read through GraphQL. For each scheduled operation, the app matches later execution, cancellation and salt events by operation id, decodes the calldata using the contract ABIs in `src/abis`, and maps role hashes to readable names. Each query returns at most the 1,000 most recent events.
 
 ## Transaction Parameters
 
@@ -29,8 +31,8 @@ To set up the eBTC Timelock Transparency Dashboard locally, follow these instruc
 1. **Clone the Repository:**
 
 ```sh
-git clone https://github.com/ebtc-finance/ebtc-timelock-dashboard.git
-cd ebtc-timelock-dashboard
+git clone https://github.com/ebtc-protocol/timelock-dashboard.git
+cd timelock-dashboard
 ```
 
 2. **Install Dependencies:**
@@ -53,9 +55,18 @@ yarn start
 
 The application should now be running on `http://localhost:3000`.
 
+4. **Run the Checks:**
+
+```sh
+npm run lint
+npm run prettier
+npm test -- --watchAll=false
+npm run build
+```
+
 ## Features
 
-- **Real-time Updates**: Dynamically fetches the latest transaction data from the blockchain.
+- **Decoded Transactions**: Shows target contract names, decoded function calls and readable role names.
 - **Chain Selector**: Toggle between Sepolia and Mainnet to view transactions from different networks.
 - **Transaction State Links**: Direct links to Etherscan for each transaction based on its state.
 - **Progress Bar**: Displays the progress of the time window for a transaction to be executed.
