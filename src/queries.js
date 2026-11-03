@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const GET_LOW_SEC_SCHEDULED_TRANSACTIONS = gql`
   query GetLowSecScheduledTransactions {
-    callScheduleds {
+    callScheduleds(first: 1000, orderBy: blockTimestamp, orderDirection: desc) {
       id
       LowSecTimelock_id
       index
@@ -17,7 +17,7 @@ export const GET_LOW_SEC_SCHEDULED_TRANSACTIONS = gql`
 
 export const GET_LOW_SEC_EXECUTED_TRANSACTIONS = gql`
   query GetLowSecExecutedTransactions {
-    callExecuteds {
+    callExecuteds(first: 1000, orderBy: blockTimestamp, orderDirection: desc) {
       id
       LowSecTimelock_id
       index
@@ -31,7 +31,7 @@ export const GET_LOW_SEC_EXECUTED_TRANSACTIONS = gql`
 
 export const GET_LOW_SEC_SALTS = gql`
   query GetLowSecSalts {
-    callSalts {
+    callSalts(first: 1000, orderBy: blockTimestamp, orderDirection: desc) {
       id
       LowSecTimelock_id
       salt
@@ -42,7 +42,7 @@ export const GET_LOW_SEC_SALTS = gql`
 
 export const GET_LOW_SEC_CANCELLED_TRANSACTIONS = gql`
   query GetLowSecCancelledTransactions {
-    cancelleds {
+    cancelleds(first: 1000, orderBy: blockTimestamp, orderDirection: desc) {
       id
       LowSecTimelock_id
       blockTimestamp
@@ -52,7 +52,11 @@ export const GET_LOW_SEC_CANCELLED_TRANSACTIONS = gql`
 
 export const GET_HIGH_SEC_SCHEDULED_TRANSACTIONS = gql`
   query GetHighSecScheduledTransactions {
-    highSecTimelockCallScheduleds {
+    highSecTimelockCallScheduleds(
+      first: 1000
+      orderBy: blockTimestamp
+      orderDirection: desc
+    ) {
       id
       HighSecTimelock_id
       index
@@ -67,7 +71,11 @@ export const GET_HIGH_SEC_SCHEDULED_TRANSACTIONS = gql`
 
 export const GET_HIGH_SEC_EXECUTED_TRANSACTIONS = gql`
   query GetHighSecExecutedTransactions {
-    highSecTimelockCallExecuteds {
+    highSecTimelockCallExecuteds(
+      first: 1000
+      orderBy: blockTimestamp
+      orderDirection: desc
+    ) {
       id
       HighSecTimelock_id
       index
@@ -81,7 +89,11 @@ export const GET_HIGH_SEC_EXECUTED_TRANSACTIONS = gql`
 
 export const GET_HIGH_SEC_SALTS = gql`
   query GetHighSecSalts {
-    highSecTimelockCallSalts {
+    highSecTimelockCallSalts(
+      first: 1000
+      orderBy: blockTimestamp
+      orderDirection: desc
+    ) {
       id
       HighSecTimelock_id
       salt
@@ -92,7 +104,11 @@ export const GET_HIGH_SEC_SALTS = gql`
 
 export const GET_HIGH_SEC_CANCELLED_TRANSACTIONS = gql`
   query GetHighSecCancelledTransactions {
-    highSecTimelockCancelleds {
+    highSecTimelockCancelleds(
+      first: 1000
+      orderBy: blockTimestamp
+      orderDirection: desc
+    ) {
       id
       HighSecTimelock_id
       blockTimestamp
